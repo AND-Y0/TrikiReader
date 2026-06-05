@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="TrikiReader.Tests\**\*.cs" />
+  </ItemGroup>
+
+  <Target Name="MirrorBuildOutputToFixedPublishFolder" AfterTargets="Build">
+    <ItemGroup>
+      <CurrentBuildOutput Include="$(TargetDir)**\*" />
+    </ItemGroup>
+    <Copy
+      SourceFiles="@(CurrentBuildOutput)"
+      DestinationFiles="@(CurrentBuildOutput->'$(MSBuildProjectDirectory)\bin\Release\$(TargetFramework)\win-x64\publish\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>
